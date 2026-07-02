@@ -58,7 +58,7 @@ int check_flags(int argc, char **argv, struct purp_cli_option *opts)
 
 const char *purp_errmsg(int code)
 {
-	switch(code) {
+	switch (code) {
 	case PURP_OPT_ERR_MISSING_ARG:
 		return "[ERROR] Missing Argument!";
 	case PURP_OPT_ERR_INVALID_CLUSTER:
@@ -76,15 +76,16 @@ int purp_printhelp(struct purp_cli_option *opts)
 	//       It's ugly, both in code and in print...
 	for (size_t i = 0; opts[i].flag != '\0'; ++i) {
 		struct purp_cli_option *opt = &opts[i];
-		printf("-%c | ",opt->flag);
+
+		printf("-%c", opt->flag);
 		if (opt->long_opt)
-			printf("--%s",opt->long_opt);
+			printf(" | --%s", opt->long_opt);
 		if (opt->has_arg)
 			fputs(" <arg>", stdout);
 		else
 			fputs("      ", stdout);
 		if (opt->desc)
-			printf("\t\t%s",opt->desc);
+			printf("\t\t%s", opt->desc);
 		putchar('\n');
 	}
 	putchar('\n');
