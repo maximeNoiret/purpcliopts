@@ -1,6 +1,9 @@
 # Command Line Interface Argument Parser
 This is a library written in C designed to be used in C that allows one to parse arguments more easily. It comes at the cost of memory of course, so if performances are actually genuinely important I recommend not using this and either using a more reputable one or even just making your own very specific one.
 
+## NOTE
+This library isn't released yet. Anything in the API (like function names, syntax, etc) might be changed, so don't use it yet.
+
 ---
 
 ## Installing
