@@ -36,7 +36,7 @@ int short_flags(char *flags, char *arg, struct purp_cli_option *opts)
 	return PURP_OPT_OK;
 } // short_flags
 
-int check_args(int argc, char **argv, struct purp_cli_option *opts)
+int check_flags(int argc, char **argv, struct purp_cli_option *opts)
 {
 	for (int i = 0; i < argc; ++i) {
 		char *opt = argv[i];
@@ -44,13 +44,13 @@ int check_args(int argc, char **argv, struct purp_cli_option *opts)
 		if (opt[0] != '-' || opt[1] == '\0')
 			continue;
 		if (opt[1] == '-')
-			// TODO: long arguments
+			// TODO: long flags
 			return -1;
 		return short_flags(opt, argv[i + 1], opts);
 	}
 
 	return PURP_OPT_OK;
-} // check_args
+} // check_flags
 
 const char *purp_errmsg(int code)
 {
@@ -64,3 +64,8 @@ const char *purp_errmsg(int code)
 	}
 	return NULL;
 } // purp_errmsg
+
+char *purp_helpmsg(struct purp_cli_option *opts)
+{
+	// TODO: implement function
+} // purp_helpmsg

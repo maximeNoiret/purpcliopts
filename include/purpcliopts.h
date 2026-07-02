@@ -17,8 +17,10 @@ enum purp_cli_err {
 
 #define NO_ARG_CB(func) ((void (*)(const char *))(func))
 
-int check_args(int argc, char **argv, struct purp_cli_option *opts);
+int check_flags(int argc, char **argv, struct purp_cli_option *opts);
 
 const char *purp_errmsg(int code);
+
+char *purp_helpmsg(struct purp_cli_option *opts);
 
 #endif // PURPCLIOPTS_H_
