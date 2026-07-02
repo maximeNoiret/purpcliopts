@@ -8,7 +8,7 @@ I recommend installing from source because if you install some binaries from som
 
 ### Building from Source
 To build from source, simply clone the repository and install the library to your system.
-```
+```bash
 git clone https://github.com/maximeNoiret/purpcliopts
 cd purpcliopts
 make && sudo make install
@@ -21,12 +21,12 @@ To uninstall, simply run ``make uninstall``.
 ## Using
 Actually using the library is pretty straightforward.
 After installing it, you need to import the header for the library:
-```
+```c
 #include <purpcliopts.h>
 ```
 
 Then, you need to create an array of the `purp_cli_option` struct. Here is an example with 2 options:
-```
+```c
 struct purp_cli_option options[] = {
 	{
 		.long_opt = "help",
@@ -43,7 +43,7 @@ struct purp_cli_option options[] = {
 	{0}
 };
 ```
-Make sure to create a function for each option. If the option doesn't have an argument (`has_arg` is set to 0), use the `NO_ARG_CB` macro on the function.
+Make sure to create a function for each option. If the option doesn't have an argument (`has_arg` is set to 0), use the `NO_ARG_CB` macro, included in `purpcliopts.h`, on the function.
 > [!WARNING]
 > MAKE SURE TO INCLUDE A ZERO STRUCT AT THE END. (This might be fixed in the future, but too lazy for now :x)
 
