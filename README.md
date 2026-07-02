@@ -29,13 +29,15 @@ Then, you need to create an array of the `purp_cli_option` struct. Here is an ex
 ```c
 struct purp_cli_option options[] = {
 	{
-		.long_opt = "help",
-		.flag = 'h',
+		.long_opt = "cool",
+		.desc = "This is a cool description",
+		.flag = 'c',
 		.has_arg = 0,
-		.callback = NO_ARG_CB(help_callback)
+		.callback = NO_ARG_CB(cool_function)
 	},
 	{
 		.long_opt = "another-option",
+		.desc = NULL,
 		.flag = 'a',
 		.has_arg = 1,
 		.callback = another_callback
@@ -55,5 +57,6 @@ Better documentation on usage will be written in the future. But if you're progr
 I accept pull requests because I'm bad at coding so you fixing up things or making it better overall would be greatly appreciated (and I might learn a thing or two from it).
 
 However, you must strictly follow the Linux Kernel Programming Style. There is a `check` command in the Makefile, but you need to get checkpatch.pl from the Linux repository to use it. (I don't know if I should include it myself in my repository, but getting a couple files shouldn't be hard if you code in C)
+Also I don't know why GitHub has 4-spaces tabs, but use 8-spaces tabs.
 
 I recommend writing tests in `tests/test.c` whenever you change the code so you can test it out. I didn't put in any unit testing because I'm lazy (if you wanna do that too all the power to you)

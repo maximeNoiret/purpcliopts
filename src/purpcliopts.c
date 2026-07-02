@@ -1,4 +1,5 @@
-#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "purpcliopts.h"
 
 int handle_option(char next, char *arg, struct purp_cli_option *opt)
@@ -20,6 +21,9 @@ int short_flags(char *flags, char *arg, struct purp_cli_option *opts)
 	int ret = 0;
 
 	for (size_t i = 1; flags[i] != '\0'; ++i) {
+		if (flags[i] == 'h')
+			return PURP_OPT_HELP;
+
 		size_t j = 0;
 
 		for (; opts[j].flag != '\0'; ++j) {
@@ -65,7 +69,24 @@ const char *purp_errmsg(int code)
 	return NULL;
 } // purp_errmsg
 
-char *purp_helpmsg(struct purp_cli_option *opts)
+int purp_printhelp(struct purp_cli_option *opts)
 {
-	// TODO: implement function
+	puts("Help Menu:");
+	// TODO: Make this better. This sucks lmao
+	//       It's ugly, both in code and in print...
+	for (size_t i = 0; opts[i].flag != '\0'; ++i) {
+		struct purp_cli_option *opt = &opts[i];
+		printf("-%c | ",opt->flag);
+		if (opt->long_opt)
+			printf("--%s",opt->long_opt);
+		if (opt->has_arg)
+			fputs(" <arg>", stdout);
+		else
+			fputs("      ", stdout);
+		if (opt->desc)
+			printf("\t\t%s",opt->desc);
+		putchar('\n');
+	}
+	putchar('\n');
+	return 0;
 } // purp_helpmsg
