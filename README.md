@@ -33,21 +33,21 @@ struct purp_cli_option options[] = {
 		.desc = "This is a cool description",
 		.flag = 'c',
 		.has_arg = 0,
-		.callback = NO_ARG_CB(cool_function)
+		.callback.no_arg = cool_function
 	},
 	{
 		.long_opt = "another-option",
 		.desc = NULL,
 		.flag = 'a',
 		.has_arg = 1,
-		.callback = another_callback
+		.callback.with_arg = another_callback
 	},
 	{0}
 };
 ```
-Make sure to create a function for each option. If the option doesn't have an argument (`has_arg` is set to 0), use the `NO_ARG_CB` macro, included in `purpcliopts.h`, on the function.
+Make sure to create a function for each option. If the option doesn't have an argument (`has_arg` is set to 0), use `.callback.no_arg`. Otherwise, use `.callback.with_arg`.
 > [!WARNING]
-> MAKE SURE TO INCLUDE A ZERO STRUCT AT THE END. (This might be fixed in the future, but too lazy for now :x)
+> MAKE SURE TO INCLUDE A ZERO STRUCT AT THE END FOR SENTINEL. (This might be fixed in the future, but too lazy for now :x)
 
 Better documentation on usage will be written in the future. But if you're programming in C you should understand this much :x
 

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 			.desc = "Prints something to screen",
 			.flag = 'p',
 			.has_arg = 1,
-			.callback = print_callback
+			.callback.with_arg = print_callback
 		},
 		{0}
 	};

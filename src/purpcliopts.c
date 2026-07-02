@@ -9,9 +9,9 @@ int handle_option(char next, char *arg, struct purp_cli_option *opt)
 			return PURP_OPT_ERR_INVALID_CLUSTER;
 		else if (!arg || arg[0] == '-')
 			return PURP_OPT_ERR_MISSING_ARG;
-		opt->callback(arg);
+		opt->callback.with_arg(arg);
 	} else {
-		opt->callback(NULL);
+		opt->callback.no_arg();
 	}
 	return PURP_OPT_OK;
 } // handle_option

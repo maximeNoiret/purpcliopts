@@ -1,10 +1,15 @@
 #ifndef PURPCLIOPTS_H_
 #define PURPCLIOPTS_H_
 
+union purp_callback {
+	void (*no_arg)(void);
+	void (*with_arg)(const char *arg);
+};
+
 struct purp_cli_option {
 	const char *long_opt;
 	const char *desc;
-	void (*callback)(const char *arg);
+	union purp_callback callback;
 	char flag;
 	unsigned int has_arg : 1;
 };
