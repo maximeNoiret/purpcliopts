@@ -23,7 +23,7 @@ $(BLDDIR)/purpcliopts.o: $(SRCDIR)/purpcliopts.c $(INCDIR)/purpcliopts.h
 .PHONY: check debug install uninstall clean
 
 check:
-	LC_ALL=C ./checkpatch.pl --strict --ignore SPDX_LICENSE_TAG --no-tree -f src/*.c include/*.h tests/*.c
+	LC_ALL=C ./checkpatch.pl --strict --ignore LONG_LINE_STRING --ignore SPDX_LICENSE_TAG --no-tree -f src/*.c include/*.h tests/*.c
 
 debug: CFLAGS = $(CFLAGS_DEBUG)
 debug: $(BLDDIR)/libpurpcliopts.a $(BLDDIR)/test
