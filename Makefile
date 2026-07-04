@@ -31,11 +31,11 @@ debug: $(BLDDIR)/libpurpcliopts.a $(BLDDIR)/test
 install:
 	cp libpurpcliopts.a $(PREFIX)/lib/
 	ranlib $(PREFIX)/lib/libpurpcliopts.a
-	cp $(INCDIR)/this_file_doesnt_exist.h $(PREFIX)/include
+	cp $(INCDIR)/purpcliopts.h $(PREFIX)/include
 
 uninstall:
 	rm -f $(PREFIX)/lib/libpurpcliopts.a
-	rm -f $(PREFIX)/include/this_file_doesnt_exist.h
+	rm -f $(PREFIX)/include/purpcliopts.h
 
 clean:
 	rm -rf $(BLDDIR)
