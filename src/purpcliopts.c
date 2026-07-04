@@ -126,17 +126,35 @@ const char *purp_errmsg(int code)
 	return NULL;
 } // purp_errmsg
 
+size_t purp_getmaxlong(struct purp_cli_option *opts)
+{
+	size_t max = 0;
+
+	for (size_t i = 0; opts[i].flag != '\0'; ++i) {
+		if (!opts[i].long_opt)
+			continue;
+		size_t len = strlen(opts[i].long_opt);
+
+		if (len > max)
+			max = len;
+	}
+
+	return max;
+}
+
 int purp_printhelp(struct purp_cli_option *opts)
 {
-	puts("Help Menu:");
-	// TODO: Make this better. This sucks lmao
-	//       It's ugly, both in code and in print...
+	puts("Help Menu");
+	size_t max_len = purp_getmaxlong(opts);
+
 	for (size_t i = 0; opts[i].flag != '\0'; ++i) {
 		struct purp_cli_option *opt = &opts[i];
 
 		printf("-%c", opt->flag);
 		if (opt->long_opt)
-			printf(" | --%s", opt->long_opt);
+			printf(" | --%-*s", (int)max_len, opt->long_opt);
+		else
+			printf("%-*s", (int)(max_len + 5), "");
 		if (opt->has_arg)
 			fputs(" <arg>", stdout);
 		else
