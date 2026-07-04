@@ -2,7 +2,42 @@
 #include <string.h>
 #include "purpcliopts.h"
 
-int handle_option(char next, char *arg, struct purp_cli_option *opt)
+int handle_long(char *arg, struct purp_cli_option *opt)
+{
+	if (opt->has_arg) {
+		if (!arg || arg[0] == '-')
+			return PURP_OPT_ERR_MISSING_ARG;
+		opt->callback.with_arg(arg);
+	} else {
+		opt->callback.no_arg();
+	}
+	return PURP_OPT_OK;
+}
+
+int long_flag(char *flag, char *next, struct purp_cli_option *opts)
+{
+	if (strncmp("help", flag, 5) == 0)
+		return PURP_OPT_HELP;
+
+	size_t i = 0;
+
+	for (; opts[i].flag != '\0'; ++i) {
+		if (!opts[i].long_opt)
+			continue;
+		if (strcmp(opts[i].long_opt, (flag + 2)) == 0) {
+			int ret = handle_long(next, &opts[i]);
+
+			if (ret)
+				return ret;
+			break;
+		}
+	}
+	if (opts[i].flag == '\0')
+		return PURP_OPT_ERR_UNKNOWN_FLAG;
+	return PURP_OPT_OK;
+}
+
+int handle_short(char next, char *arg, struct purp_cli_option *opt)
 {
 	if (opt->has_arg) {
 		if (next != '\0')
@@ -28,7 +63,7 @@ int short_flags(char *flags, char *arg, struct purp_cli_option *opts)
 
 		for (; opts[j].flag != '\0'; ++j) {
 			if (flags[i] == opts[j].flag) {
-				ret = handle_option(flags[i + 1], arg, &opts[j]);
+				ret = handle_short(flags[i + 1], arg, &opts[j]);
 				if (ret)
 					return ret;
 				break;
@@ -42,15 +77,22 @@ int short_flags(char *flags, char *arg, struct purp_cli_option *opts)
 
 int check_flags(int argc, char **argv, struct purp_cli_option *opts)
 {
+	int ret = PURP_OPT_OK;
+
 	for (int i = 0; i < argc; ++i) {
 		char *opt = argv[i];
 
 		if (opt[0] != '-' || opt[1] == '\0')
 			continue;
-		if (opt[1] == '-')
-			// TODO: long flags
-			return -1;
-		return short_flags(opt, argv[i + 1], opts);
+		if (opt[1] == '-') {
+			ret = long_flag(opt, argv[i + 1], opts);
+			if (ret)
+				return ret;
+			continue;
+		}
+		ret = short_flags(opt, argv[i + 1], opts);
+		if (ret)
+			return ret;
 	}
 
 	return PURP_OPT_OK;

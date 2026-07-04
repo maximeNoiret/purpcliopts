@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
 	struct purp_cli_option options[] = {
 		{
-			.long_opt = NULL,
+			.long_opt = "print",
 			.desc = "Prints something to screen",
 			.flag = 'p',
 			.has_arg = 1,
