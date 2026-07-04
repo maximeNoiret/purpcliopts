@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include "purpcliopts.h"
 
 #define L_FLAG_MASK 0x0001
@@ -31,7 +32,7 @@ int main(int argc, char **argv)
 		},
 		{
 			.long_opt = "very-long-param",
-			.desc = "Idk, do something neat.",
+			.desc = "A very, very long description explaining details about this option specifically. I don't know what else to write but yeah.",
 			.flag = 'l',
 			.has_arg = 1,
 			.callback.with_arg = l_callback

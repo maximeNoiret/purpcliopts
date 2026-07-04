@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+
 #include "purpcliopts.h"
+
 #ifndef _WIN32
 #include <sys/ioctl.h>
 #include <unistd.h>
+
 #else
 #define get_terminal_width() 80
 #endif
@@ -159,15 +163,53 @@ size_t purp_getmaxlong(struct purp_cli_option *opts)
 	return max;
 }
 
+int print_description(const char *desc, int desc_p)
+{
+	int term_w = get_terminal_width();
+	int next_word_bytes = 0;
+	int current_line_width = desc_p;
+
+	for (const char *desc_ptr = desc; *desc_ptr != '\0'; ++desc_ptr) {
+		for (const char *next = desc_ptr;
+		     *next != '\0' && !isspace((unsigned char)*next);
+		     ++next)
+			++next_word_bytes;
+
+		if (current_line_width + next_word_bytes > term_w) {
+			putchar('\n');
+			printf("%*s", desc_p, " ");
+			current_line_width = desc_p;
+		}
+		printf("%.*s", next_word_bytes, desc_ptr);
+		current_line_width += next_word_bytes;
+		desc_ptr += next_word_bytes;
+		next_word_bytes = 0;
+		if (*desc_ptr != '\0') {
+			if (*desc_ptr == '\n') {
+				putchar('\n');
+				printf("%*s", desc_p, " ");
+				current_line_width = desc_p;
+			} else {
+				putchar(*desc_ptr);
+			}
+		} else {
+			break;
+		}
+	}
+
+	return 0;
+}
+
 int purp_printhelp(struct purp_cli_option *opts)
 {
 	puts("Help Menu");
 	size_t max_len = purp_getmaxlong(opts);
+	int desc_p = 22 + (int)max_len;
 
 	for (size_t i = 0; opts[i].flag != '\0'; ++i) {
 		struct purp_cli_option *opt = &opts[i];
 
-		printf("-%c", opt->flag);
+		printf(" -%c", opt->flag);
 		if (opt->long_opt)
 			printf(" | --%-*s", (int)max_len, opt->long_opt);
 		else
@@ -176,8 +218,11 @@ int purp_printhelp(struct purp_cli_option *opts)
 			fputs(" <arg>", stdout);
 		else
 			fputs("      ", stdout);
-		if (opt->desc)
-			printf("\t\t%s", opt->desc);
+
+		if (opt->desc) {
+			fputs("        ", stdout);
+			print_description(opt->desc, desc_p);
+		}
 		putchar('\n');
 	}
 	putchar('\n');
