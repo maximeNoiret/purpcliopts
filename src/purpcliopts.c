@@ -16,7 +16,7 @@ int handle_long(char *arg, struct purp_cli_option *opt)
 
 int long_flag(char *flag, char *next, struct purp_cli_option *opts)
 {
-	if (strncmp("help", flag, 5) == 0)
+	if (strncmp("--help", flag, 7) == 0)
 		return PURP_OPT_HELP;
 
 	size_t i = 0;
