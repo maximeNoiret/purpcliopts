@@ -22,8 +22,6 @@ enum purp_cli_err {
 	PURP_OPT_ERR_UNKNOWN_FLAG
 };
 
-#define NO_ARG_CB(func) ((void (*)(const char *))(func))
-
 int check_flags(int argc, char **argv, struct purp_cli_option *opts);
 
 const char *purp_errmsg(int code);
