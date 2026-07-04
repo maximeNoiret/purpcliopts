@@ -12,6 +12,8 @@
 #define get_terminal_width() 80
 #endif
 
+#define MAX_DESC_WIDTH 60
+
 int handle_long(char *arg, struct purp_cli_option *opt, void *usr_data)
 {
 	if (opt->has_arg) {
@@ -22,7 +24,7 @@ int handle_long(char *arg, struct purp_cli_option *opt, void *usr_data)
 		opt->callback.no_arg(usr_data);
 	}
 	return PURP_OPT_OK;
-}
+} // handle_long
 
 int long_flag(char *flag,
 	      char *next,
@@ -48,7 +50,7 @@ int long_flag(char *flag,
 	if (opts[i].flag == '\0')
 		return PURP_OPT_ERR_UNKNOWN_FLAG;
 	return PURP_OPT_OK;
-}
+} // long_flag
 
 int handle_short(char next,
 		 char *arg,
@@ -144,7 +146,7 @@ int get_terminal_width(void)
 	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0)
 		return w.ws_col;
 	return 80;
-}
+} // get_terminal_width
 #endif
 
 size_t purp_getmaxlong(struct purp_cli_option *opts)
@@ -161,12 +163,12 @@ size_t purp_getmaxlong(struct purp_cli_option *opts)
 	}
 
 	return max;
-}
+} // purp_getmaxlong
 
 int print_description(const char *desc, int desc_p)
 {
 	int term_w = get_terminal_width();
-	int max_eff_w = desc_p + 45;
+	int max_eff_w = desc_p + MAX_DESC_WIDTH;
 	int max_w = (term_w > max_eff_w) ? max_eff_w : term_w;
 	int next_word_bytes = 0;
 	int current_line_width = desc_p;
@@ -200,7 +202,7 @@ int print_description(const char *desc, int desc_p)
 	}
 
 	return 0;
-}
+} // print_description
 
 int purp_printhelp(struct purp_cli_option *opts)
 {
@@ -225,7 +227,7 @@ int purp_printhelp(struct purp_cli_option *opts)
 			fputs("        ", stdout);
 			print_description(opt->desc, desc_p);
 		}
-		putchar('\n');
+		puts("\n");
 	}
 	putchar('\n');
 	return 0;
