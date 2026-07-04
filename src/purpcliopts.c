@@ -77,6 +77,8 @@ int short_flags(char *flags,
 	int ret = 0;
 
 	for (size_t i = 1; flags[i] != '\0'; ++i) {
+		if (flags[i] == '-')
+			continue;
 		if (flags[i] == 'h')
 			return PURP_OPT_HELP;
 
@@ -213,7 +215,10 @@ int purp_printhelp(struct purp_cli_option *opts)
 	for (size_t i = 0; opts[i].flag != '\0'; ++i) {
 		struct purp_cli_option *opt = &opts[i];
 
-		printf(" -%c", opt->flag);
+		if (opt->flag != '-')
+			printf(" -%c", opt->flag);
+		else
+			fputs("   ", stdout);
 		if (opt->long_opt)
 			printf(" | --%-*s", (int)max_len, opt->long_opt);
 		else

@@ -14,9 +14,8 @@ void print_callback(const char *str, void *data)
 	((struct data *)data)->content = str;
 }
 
-void l_callback(const char *str, void *data)
+void l_callback(void *data)
 {
-	(void)str;
 	((struct data *)data)->flags |= L_FLAG_MASK;
 }
 
@@ -33,9 +32,9 @@ int main(int argc, char **argv)
 		{
 			.long_opt = "very-long-param",
 			.desc = "A very, very long description explaining details about this option specifically.\nI don't know what else to write but yeah.",
-			.flag = 'l',
-			.has_arg = 1,
-			.callback.with_arg = l_callback
+			.flag = '-',
+			.has_arg = 0,
+			.callback.no_arg = l_callback
 		},
 		{0}
 	};
