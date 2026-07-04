@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "purpcliopts.h"
+#ifndef _WIN32
+#include <sys/ioctl.h>
+#include <unistd.h>
+#else
+#define get_terminal_width() 80
+#endif
 
 int handle_long(char *arg, struct purp_cli_option *opt, void *usr_data)
 {
@@ -125,6 +131,17 @@ const char *purp_errmsg(int code)
 	}
 	return NULL;
 } // purp_errmsg
+
+#ifndef _WIN32  // for windows, macro at top of file makes this 80.
+int get_terminal_width(void)
+{
+	struct winsize w;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0)
+		return w.ws_col;
+	return 80;
+}
+#endif
 
 size_t purp_getmaxlong(struct purp_cli_option *opts)
 {
