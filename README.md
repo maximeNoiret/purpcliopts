@@ -48,6 +48,33 @@ struct purp_cli_option options[] = {
 	{0}
 };
 ```
+
+`no_arg` functions should have this signature:
+```c
+void function_name(void *data);
+```
+The `data` parameter is used to manipulate variables through a struct.
+
+`with_arg` functions should have this signature:
+```c
+void function_name(const char *arg, void *data);
+```
+
+When passing a struct to manipulate variables through those callbacks, you should cast it to your struct's type. For example, if we wanted to copy the pointer `arg` out of the callback function (to print it, for example):
+```c
+((struct my_data *)data)->content = arg;
+```
+
+That pointer is now accessible wherever `data` is accessible. See `tests/test.c` for an example on how to do this.
+
+An example on how to pass that struct pointer to `check_flags`:
+```c
+struct my_data usr_data = {0};
+check_flags(argc, argv, options, &usr_data);
+```
+
+Of course if there is only one variable that will be affected by options, passing an integer pointer or something like that works too. You're the programmer, you're in control lol.
+
 Make sure to create a function for each option. If the option doesn't have an argument (`has_arg` is set to 0), use `.callback.no_arg`. Otherwise, use `.callback.with_arg`.
 > [!WARNING]
 > MAKE SURE TO INCLUDE A ZERO STRUCT AT THE END FOR SENTINEL. (This might be fixed in the future, but too lazy for now :x)
