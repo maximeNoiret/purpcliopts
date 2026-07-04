@@ -2,8 +2,8 @@
 #define PURPCLIOPTS_H_
 
 union purp_callback {
-	void (*no_arg)(void);
-	void (*with_arg)(const char *arg);
+	void (*no_arg)(void *usr_data);
+	void (*with_arg)(const char *arg, void *usr_data);
 };
 
 struct purp_cli_option {
@@ -22,7 +22,10 @@ enum purp_cli_err {
 	PURP_OPT_ERR_UNKNOWN_FLAG
 };
 
-int check_flags(int argc, char **argv, struct purp_cli_option *opts);
+int check_flags(int argc,
+		char **argv,
+		struct purp_cli_option *opts,
+		void *usr_data);
 
 const char *purp_errmsg(int code);
 
