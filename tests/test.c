@@ -25,14 +25,14 @@ int main(int argc, char **argv)
 	struct purp_cli_option options[] = {
 		{
 			.long_opt = "print",
-			.desc = "Prints arg to screen",
+			.desc = "Prints <arg> to screen",
 			.flag = 'p',
 			.has_arg = 1,
 			.callback.with_arg = print_callback
 		},
 		{
 			.long_opt = "very-long-param",
-			.desc = "A very, very long description explaining details about this option specifically. I don't know what else to write but yeah.",
+			.desc = "A very, very long description explaining details about this option specifically.\nI don't know what else to write but yeah.",
 			.flag = 'l',
 			.has_arg = 1,
 			.callback.with_arg = l_callback

@@ -166,6 +166,8 @@ size_t purp_getmaxlong(struct purp_cli_option *opts)
 int print_description(const char *desc, int desc_p)
 {
 	int term_w = get_terminal_width();
+	int max_eff_w = desc_p + 45;
+	int max_w = (term_w > max_eff_w) ? max_eff_w : term_w;
 	int next_word_bytes = 0;
 	int current_line_width = desc_p;
 
@@ -175,7 +177,7 @@ int print_description(const char *desc, int desc_p)
 		     ++next)
 			++next_word_bytes;
 
-		if (current_line_width + next_word_bytes > term_w) {
+		if (current_line_width + next_word_bytes > max_w) {
 			putchar('\n');
 			printf("%*s", desc_p, " ");
 			current_line_width = desc_p;
