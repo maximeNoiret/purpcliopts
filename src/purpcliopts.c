@@ -197,6 +197,7 @@ int print_description(const char *desc, int desc_p)
 				current_line_width = desc_p;
 			} else {
 				putchar(*desc_ptr);
+				++current_line_width;
 			}
 		} else {
 			break;
